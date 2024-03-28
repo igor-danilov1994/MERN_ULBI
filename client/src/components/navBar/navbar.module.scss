@@ -1,0 +1,40 @@
+.navbar {
+  display: flex;
+  height: 50px;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  width: 100%;
+  padding: 0 25px;
+
+  &__block__logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__header {
+    margin-left: 10px;
+    font-size: 24px;
+    font-weight: 700;
+  }
+
+  &__login {
+    margin-left: auto;
+    margin-right: 20px;
+  }
+
+  &__logout {
+    cursor: pointer;
+  }
+
+  &__auth {
+    display: flex;
+  }
+}
+
+.container {
+  width: 1140px;
+  display: flex;
+  align-items: center;
+}

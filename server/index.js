@@ -2,6 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
+import fileupload from 'express-fileupload'
 import authRouter from './routes/auth.js'
 import fileRouter from "./routes/file.js"
 
@@ -15,6 +16,7 @@ app.use(cors())
 dotenv.config()
 app.use('/api/auth', authRouter)
 app.use('/api/files', fileRouter)
+app.use(fileupload({}))
 
 const DB_URL = `mongodb+srv://igordanilov1824:test@cluster0.nzgd0mj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
 

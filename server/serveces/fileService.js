@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-const FILES_PATH = '/Users/igordanilov/Desktop/courses/MERN_ULBI_TV/server/files';
+const FILES_PATH = '/Users/igordanilov/Desktop/courses/mern_ulbi/server/files';
 
 class FileService {
     async createDir(file) {

@@ -1,0 +1,6 @@
+{
+  "serverPort" : 8000,
+  "dbUrl": "mongodb+srv://ulbitv:@cloud.91g1g.mongodb.net/cloud?retryWrites=true&w=majority",
+  "secretKey": "mern-secket-key",
+  "filePath": "/Users/igordanilov/Desktop/courses/mern_ulbi/server/files"
+}

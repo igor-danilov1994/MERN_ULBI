@@ -8,4 +8,15 @@
   &__create {
     margin-left: 10px;
   }
+
+  &__upload_input {
+    display: none;
+  }
+
+  &__upload_label {
+    border: 2px dashed var(--font-color);
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-left: 10px;
+  }
 }

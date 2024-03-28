@@ -12,11 +12,11 @@ const DB_NAME = process.env.DB_NAME
 const DB_PASS = process.env.DB_PASS
 
 app.use(express.json())
-app.use(cors())
 dotenv.config()
+app.use(fileupload({}))
+app.use(cors())
 app.use('/api/auth', authRouter)
 app.use('/api/files', fileRouter)
-app.use(fileupload({}))
 
 const DB_URL = `mongodb+srv://igordanilov1824:test@cluster0.nzgd0mj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
 
@@ -30,6 +30,7 @@ const start = async () => {
     } catch (e) {
         console.log('mongoose not connect!')
         console.log(e)
+        process.exit(1)
     }
 }
 

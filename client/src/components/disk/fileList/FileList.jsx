@@ -3,7 +3,7 @@ import {File} from "./file/File/File";
 import styles from './fileList.module.scss';
 
 export const FileList = () => {
-    const files = useSelector(state => state.files.files).map(file => <File key={file.id} file={file}/>)
+    const files = useSelector(state => state.files.files).map(file => <File key={file._id} file={file}/>)
 
     return (
         <>{files.length ? (

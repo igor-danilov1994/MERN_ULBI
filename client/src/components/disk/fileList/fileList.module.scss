@@ -21,4 +21,12 @@
     justify-self: center;
   }
 
+  &:hover &__date {
+    grid-column-start: 3;
+  }
+
+  &:hover &__size {
+    grid-column-start: 4;
+  }
+
 }

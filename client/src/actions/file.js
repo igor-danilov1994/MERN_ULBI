@@ -78,3 +78,29 @@ export const uploadFile = (file, dirId) => {
     }
 }
 
+export  const downloadFile = async (file) => {
+    try {
+        const token = localStorage.getItem('token')
+
+        const response = await fetch(`${BASE_URL}/files/download?id=${file._id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
+        })
+
+        if (response.status === 200){
+            const blob = await response.blob()
+            const downloadUrl = window.URL.createObjectURL(blob)
+            const link = document.createElement('a')
+            link.href = downloadUrl
+            link.download = file.name
+            document.body.appendChild(link)
+            link.click()
+            link.remove()
+        }
+    } catch (e) {
+        console.log(e)
+    }
+
+}
+

@@ -63,7 +63,8 @@ router.post('/login',
                 })
             }
 
-            const token = jwt.sign({id: user.id}, 'igordanilov1824', {expiresIn: '1d'})
+            let payload = { id : user._id};
+            const token = jwt.sign(payload, 'secret')
 
             return res.status(200).json({
                 token,
@@ -87,9 +88,8 @@ router.post('/login',
 router.get('/auth', authMiddleware,
     async (req, res) => {
         try {
-            const _id = req.user.id
-            const user = User.findOne(_id)
-            const token = jwt.sign({id: user.id}, 'igordanilov1824', {expiresIn: '1d'})
+            const user = User.findOne({_id: req.user})
+            const token = jwt.sign({id: user.id}, 'secret', {expiresIn: '30d'})
 
             return res.status(200).json({
                 token,

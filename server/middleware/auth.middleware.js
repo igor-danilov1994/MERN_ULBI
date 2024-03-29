@@ -11,13 +11,12 @@ const authMiddleware = (req, res, next) => {
         if (!token) {
             return res.status(401).json({message: 'Auth error'})
         }
-        const decoded = jwt.verify(token, 'igordanilov1824')
-        req.user = decoded
+        const decoded = jwt.verify(token, 'secret')
+        req.user = decoded;
         next()
     } catch (e) {
         return res.status(401).json({message: 'Auth error'})
     }
 }
-
 
 export default authMiddleware

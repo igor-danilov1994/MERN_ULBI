@@ -26,7 +26,7 @@ export const login = (email, password) => {
             dispatch(setUser(response.data.user))
             localStorage.setItem('token', response.data.token)
         } catch (e) {
-            alert(e.response.data.message)
+            alert(e)
         }
     }
 }

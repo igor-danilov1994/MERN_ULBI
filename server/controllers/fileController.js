@@ -51,13 +51,13 @@ class FileController {
                 })
 
             }
-            user.uszedSpace = file.size + user.usedSpace
+            user.usedSpace = file.size + user.usedSpace
 
             let path;
             if (parent){
-                path = `${FILES_PATH}/${user.id}/${parent.path}/${file.name}`
+                path = `${FILES_PATH}/${user._id}/${parent.path}/${file.name}`
             } else {
-                path = `${FILES_PATH}/${user.id}/${file.name}`
+                path = `${FILES_PATH}/${user._id}/${file.name}`
             }
 
             if (fs.existsSync(path)){

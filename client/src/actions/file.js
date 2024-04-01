@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {addFile, setFiles} from "../reducers/fileReducer";
+import {addFile, deleteFile, setFiles} from "../reducers/fileReducer";
 
 const BASE_URL = `http://localhost:5001/api`
 
@@ -78,7 +78,7 @@ export const uploadFile = (file, dirId) => {
     }
 }
 
-export  const downloadFile = async (file) => {
+export const downloadFile = async (file) => {
     try {
         const token = localStorage.getItem('token')
 
@@ -101,6 +101,29 @@ export  const downloadFile = async (file) => {
     } catch (e) {
         console.log(e)
     }
-
 }
+
+export const deleteFiles = (file) => {
+    return async dispatch => {
+        try {
+            const token = localStorage.getItem('token')
+
+            const response = await axios.delete(`${BASE_URL}/files/delete?id=${file._id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+            })
+
+            if (response.status === 200) {
+                dispatch(deleteFile(file._id))
+                alert(response.data.message)
+            }
+        } catch (e) {
+            console.log(e)
+        }
+    }
+}
+
+
+
 

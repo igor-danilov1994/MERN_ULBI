@@ -3,7 +3,7 @@ import dirLogo from '../../../../../assets/img/dir.svg';
 import fileLogo from '../../../../../assets/img/file.svg';
 import {useDispatch, useSelector} from "react-redux";
 import {pushFromStack, setCurrentDir} from "../../../../../reducers/fileReducer";
-import {downloadFile} from "../../../../../actions/file";
+import {deleteFiles, downloadFile} from "../../../../../actions/file";
 
 export const File = ({file}) => {
     const dispatch = useDispatch()
@@ -18,7 +18,12 @@ export const File = ({file}) => {
 
     const downloadFileHandler = (e) => {
         e.stopPropagation()
-        downloadFile(file)
+        dispatch(deleteFiles(file))
+    }
+
+    const  deleteFilesHandler = (e) => {
+        e.stopPropagation()
+        dispatch(deleteFiles(file))
     }
 
     return (
@@ -37,7 +42,12 @@ export const File = ({file}) => {
                     Скачать
                 </button>
             )}
-            <button className={`${styles.file__delete} ${styles.file__btn}`}>Удалить</button>
+            <button
+                className={`${styles.file__delete} ${styles.file__btn}`}
+                onClick={(e) => deleteFilesHandler(e)}
+            >
+                Удалить
+            </button>
         </div>
     );
 };

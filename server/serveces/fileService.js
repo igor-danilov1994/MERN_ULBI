@@ -15,11 +15,26 @@ class FileService {
                 fs.mkdirSync(filePath, {recursive: true});
                 return {message: 'Directory created successfully'};
             } else {
-                throw new Error('Directory already exists');
+                console.log('Directory already exists')
+                return {message: 'Directory already exists'};
             }
         } catch (error) {
             throw new Error(`Error creating directory: ${error.message}`);
         }
+    }
+
+    deleteFile(file) {
+        const path = this.getPath(file)
+
+        if (file.type === 'dir'){
+            fs.rmdirSync(path)
+        } else {
+            fs.unlinkSync(path)
+        }
+    }
+
+    getPath(file) {
+        return FILES_PATH + '/' + file.user + '/' + file.path;
     }
 }
 

@@ -9,7 +9,7 @@ class FileController {
     async createDir(req, res) {
         try {
             const {name, type, parent} = req.body
-            const file = new File({name, type, parent, user: req.user.id})
+            const file = await new File({name, type, parent, user: req.user.id})
             const parentFile = await File.findOne({_id: parent})
 
             if (!parentFile) {
@@ -67,12 +67,16 @@ class FileController {
             file.mv(path)
 
             const type = file.name.split('.').pop()
+            let filePath = file.name
+            if (parent) {
+                filePath = parent.path + '/' + file.name
+            }
 
             const dbFile = new File({
                 name: file.name,
                 type,
                 size: file.size,
-                path: parent?.path,
+                path: filePath,
                 parent: parent?._id,
                 user: user._id
             })
@@ -102,6 +106,26 @@ class FileController {
         } catch (e) {
             console.log(e)
             res.status(400).json({message: 'Error Download File'})
+        }
+    }
+
+    async deleteFile(req, res) {
+        try {
+            const fileId = req.query.id
+            const userId = req.user.id
+            const file = await File.findOne({_id: fileId, user: userId})
+
+            if (!file){
+                res.status(400).json({message: 'File not found'})
+            }
+
+            fileService.deleteFile(file)
+            await file.deleteOne()
+            return res.status(200).json({message: "File was deleted"})
+
+        } catch (e) {
+            console.log(e)
+            return res.status(400).json({message: 'Error delete file'})
         }
     }
 }

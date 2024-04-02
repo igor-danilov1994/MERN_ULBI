@@ -1,12 +1,14 @@
 import axios from 'axios'
 import {addFile, deleteFile, setFiles} from "../reducers/fileReducer";
 import {addUploadFile, changeUploadFile, showUploader} from "../reducers/uploadReducer";
+import {hideLoader, showLoader} from "../reducers/appReducer";
 
 const BASE_URL = `http://localhost:5001/api`
 
 export const getFiles = (dirId, sort) => {
     return async dispatch => {
         try {
+            dispatch(showLoader())
             const token = localStorage.getItem('token')
             let url = `${BASE_URL}/files`
 
@@ -28,6 +30,8 @@ export const getFiles = (dirId, sort) => {
             dispatch(setFiles(response.data))
         } catch (e) {
             console.log(e, "Error get file")
+        } finally {
+            dispatch(hideLoader())
         }
     }
 }

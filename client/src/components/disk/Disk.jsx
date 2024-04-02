@@ -11,8 +11,11 @@ export const Disk = () => {
     const dispatch = useDispatch()
     const currentDir = useSelector((state) => state.files.currentDir)
     const stack = useSelector((state) => state.files.dirStack)
+    const loader = useSelector((state) => state.appLoader.loader)
     const [dragEnter, setDragEnter] = useState(false)
     const [sort, setSort] = useState('type')
+
+    console.log('loader', loader)
 
     useEffect(() => {
         dispatch(getFiles(currentDir, sort))
@@ -58,6 +61,14 @@ export const Disk = () => {
         let files = [...e.dataTransfer.files]
         files.forEach((file) => dispatch(uploadFile(file, currentDir)))
         setDragEnter(false)
+    }
+
+    if (loader) {
+        return (
+            <div className={styles.loader}>
+                <div className={styles.lds_dual_ring}></div>
+            </div>
+        )
     }
 
     return (

@@ -33,19 +33,20 @@ class FileController {
         try {
             const {sort} = req.query
             let files
+            const filter = {user: req.user.id, parent: req.query.parent}
 
             switch (sort) {
                 case 'name':
-                    files = await File.find({user: req.user.id, parent: req.query.parent}).sort({name: 1})
+                    files = await File.find(filter).sort({name: 1})
                     break
                 case 'type':
-                    files = await File.find({user: req.user.id, parent: req.query.parent}).sort({type: 1})
+                    files = await File.find(filter).sort({type: 1})
                     break
                 case 'date':
-                    files = await File.find({user: req.user.id, parent: req.query.parent}).sort({date: 1})
+                    files = await File.find(filter).sort({date: 1})
                     break
                 default:
-                    files = await File.find({user: req.user.id, parent: req.query.parent})
+                    files = await File.find(filter)
                     break
             }
             return res.json(files)
@@ -142,6 +143,19 @@ class FileController {
         } catch (e) {
             console.log(e)
             return res.status(400).json({message: 'Error delete file'})
+        }
+    }
+
+
+    async searchFiles(req, res) {
+        try {
+            const searchName = req.query.search
+            let files = await File.find({user: req.user.id})
+            files = files.filter(file => file.name.includes(searchName))
+            res.status(200).json(files)
+        } catch (e) {
+            console.log(e)
+            return res.status(500).json({message: 'Search error'})
         }
     }
 }

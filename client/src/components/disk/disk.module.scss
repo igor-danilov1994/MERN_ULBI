@@ -3,6 +3,7 @@
 
   &__btns {
     display: flex;
+    justify-content: space-between;
   }
 
   &__create {
@@ -56,6 +57,11 @@
   border: 6px solid var(--font-color);
   border-color: var(--font-color) transparent var(--font-color) transparent;
   animation: lds_dual_ring 1.2s linear infinite;
+}
+
+.search {
+  align-self: end;
+  border: 1px solid var(--font-color);
 }
 
 @keyframes lds_dual_ring {

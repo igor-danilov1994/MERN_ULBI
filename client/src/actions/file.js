@@ -142,6 +142,28 @@ export const deleteFiles = (file) => {
     }
 }
 
+export const searchFiles = (searchName) => {
+    return async dispatch => {
+        try {
+            const token = localStorage.getItem('token')
+
+            const response = await axios.get(`${BASE_URL}/files/search?search=${searchName}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+            })
+
+            if (response.status === 200) {
+                dispatch(setFiles(response.data))
+            }
+        } catch (e) {
+            console.log(e)
+        } finally {
+            dispatch(hideLoader())
+        }
+    }
+}
+
 
 
 

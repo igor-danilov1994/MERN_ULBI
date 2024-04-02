@@ -1,11 +1,12 @@
 import {useEffect, useState} from "react";
 import styles from "./disk.module.scss";
 import {useDispatch, useSelector} from "react-redux";
-import {getFiles, uploadFile} from "../../actions/file";
+import {getFiles, searchFiles, uploadFile} from "../../actions/file";
 import {FileList} from "./fileList/FileList";
 import {Popup} from "./popup/Popup";
 import {setCurrentDir, setPopupDisplay} from "../../reducers/fileReducer";
 import {Uploader} from "../upload/Uploader";
+import {Input} from "../../utils/input/Input";
 
 export const Disk = () => {
     const dispatch = useDispatch()
@@ -14,12 +15,27 @@ export const Disk = () => {
     const loader = useSelector((state) => state.appLoader.loader)
     const [dragEnter, setDragEnter] = useState(false)
     const [sort, setSort] = useState('type')
-
-    console.log('loader', loader)
+    const [search, setSearch] = useState('')
+    const [searchTimeout, setSearchTimeout] = useState(false)
 
     useEffect(() => {
         dispatch(getFiles(currentDir, sort))
     }, [currentDir, sort])
+
+    const searchHandler = (value) => {
+        setSearch(value)
+        if (searchTimeout !== false) {
+            clearTimeout(searchTimeout)
+        }
+
+        if (value !== '') {
+            setSearchTimeout(setTimeout((value) => {
+                dispatch(searchFiles(value))
+            }, 1000, value))
+        } else {
+            dispatch(getFiles(currentDir))
+        }
+    }
 
     const openPopup = () => {
         dispatch(setPopupDisplay('flex'))
@@ -106,6 +122,15 @@ export const Disk = () => {
                         <option value="type">По типу</option>
                         <option value="date">По дате</option>
                     </select>
+
+                    <div className={styles.search}>
+                        <Input
+                            type='text'
+                            value={search}
+                            setValue={searchHandler}
+                            placeholder='Поиск...'
+                        />
+                    </div>
                 </div>
                 <FileList/>
                 <Popup/>

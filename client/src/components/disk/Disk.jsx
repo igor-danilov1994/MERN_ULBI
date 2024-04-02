@@ -12,10 +12,11 @@ export const Disk = () => {
     const currentDir = useSelector((state) => state.files.currentDir)
     const stack = useSelector((state) => state.files.dirStack)
     const [dragEnter, setDragEnter] = useState(false)
+    const [sort, setSort] = useState('type')
 
     useEffect(() => {
-        dispatch(getFiles(currentDir))
-    }, [currentDir])
+        dispatch(getFiles(currentDir, sort))
+    }, [currentDir, sort])
 
     const openPopup = () => {
         dispatch(setPopupDisplay('flex'))
@@ -85,6 +86,15 @@ export const Disk = () => {
                             className={styles.disk__upload_input}
                             onChange={(e) => onChangeInput(e)}/>
                     </div>
+                    <select
+                        value={sort}
+                        onChange={(e) => setSort(e.target.value)}
+                        className={styles.disk__select}
+                    >
+                        <option value="name">По имени</option>
+                        <option value="type">По типу</option>
+                        <option value="date">По дате</option>
+                    </select>
                 </div>
                 <FileList/>
                 <Popup/>

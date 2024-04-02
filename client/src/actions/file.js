@@ -4,13 +4,23 @@ import {addUploadFile, changeUploadFile, showUploader} from "../reducers/uploadR
 
 const BASE_URL = `http://localhost:5001/api`
 
-export const getFiles = (dirId) => {
+export const getFiles = (dirId, sort) => {
     return async dispatch => {
         try {
             const token = localStorage.getItem('token')
-            const getFilesUrl = `${BASE_URL}/files${dirId ? '?parent=' + dirId : ''}`
+            let url = `${BASE_URL}/files`
 
-            const response = await axios.get(getFilesUrl, {
+            if (dirId) {
+                url = `${url}?parent=${dirId}`
+            }
+            if (sort) {
+                url = `${url}?sort=${sort}`
+            }
+            if (dirId && sort) {
+                url = `${url}?sort=${sort}&?parent=${dirId}`
+            }
+
+            const response = await axios.get(url, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

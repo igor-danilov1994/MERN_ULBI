@@ -31,7 +31,23 @@ class FileController {
 
     async getFiles(req, res) {
         try {
-            const files = await File.find({user: req.user.id, parent: req.query.parent})
+            const {sort} = req.query
+            let files
+
+            switch (sort) {
+                case 'name':
+                    files = await File.find({user: req.user.id, parent: req.query.parent}).sort({name: 1})
+                    break
+                case 'type':
+                    files = await File.find({user: req.user.id, parent: req.query.parent}).sort({type: 1})
+                    break
+                case 'date':
+                    files = await File.find({user: req.user.id, parent: req.query.parent}).sort({date: 1})
+                    break
+                default:
+                    files = await File.find({user: req.user.id, parent: req.query.parent})
+                    break
+            }
             return res.json(files)
         } catch (e) {
             console.log(e)
@@ -45,7 +61,7 @@ class FileController {
             const parent = await File.findOne({user: req.user.id, _id: req.body.parent})
             const user = await User.findOne({_id: req.user.id})
 
-            if(user.usedSpace + file.size > user.diskSpace){
+            if (user.usedSpace + file.size > user.diskSpace) {
                 return res.status(400).json({
                     message: 'There no space on the disk'
                 })
@@ -54,13 +70,13 @@ class FileController {
             user.usedSpace = file.size + user.usedSpace
 
             let path;
-            if (parent){
+            if (parent) {
                 path = `${FILES_PATH}/${user._id}/${parent.path}/${file.name}`
             } else {
                 path = `${FILES_PATH}/${user._id}/${file.name}`
             }
 
-            if (fs.existsSync(path)){
+            if (fs.existsSync(path)) {
                 return res.status(400).json({message: 'File already exist'})
             }
 
@@ -97,7 +113,7 @@ class FileController {
             const file = await File.findOne({_id: req.query.id, user: req.user.id})
             const path = FILES_PATH + `/` + req.user.id + '/' + file.path + '/' + file.name
 
-            if (fs.existsSync(path)){
+            if (fs.existsSync(path)) {
                 return res.download(path, file.name)
             }
 
@@ -115,7 +131,7 @@ class FileController {
             const userId = req.user.id
             const file = await File.findOne({_id: fileId, user: userId})
 
-            if (!file){
+            if (!file) {
                 res.status(400).json({message: 'File not found'})
             }
 

@@ -4,6 +4,7 @@ import fileLogo from '../../../../../assets/img/file.svg';
 import {useDispatch, useSelector} from "react-redux";
 import {pushFromStack, setCurrentDir} from "../../../../../reducers/fileReducer";
 import {deleteFiles, downloadFile} from "../../../../../actions/file";
+import {sizeFormatter} from "../../../../../utils/sizeFormater";
 
 export const File = ({file}) => {
     const dispatch = useDispatch()
@@ -21,10 +22,12 @@ export const File = ({file}) => {
         dispatch(deleteFiles(file))
     }
 
-    const  deleteFilesHandler = (e) => {
+    const deleteFilesHandler = (e) => {
         e.stopPropagation()
         dispatch(deleteFiles(file))
     }
+
+    const convertFileSize = file.size ? sizeFormatter(file.size) : 'Empty'
 
     return (
         <div className={styles.file}
@@ -33,7 +36,7 @@ export const File = ({file}) => {
             <img src={`${src}`} alt="" className={styles.file__img}/>
             <div className={styles.file__name}>{file.name}</div>
             <div className={styles.file__date}>{file.date.slice(0, 10)}</div>
-            <div className={styles.file__size}>{file.size}</div>
+            <div className={styles.file__size}>{convertFileSize}</div>
             {!typeFile && (
                 <button
                     className={`${styles.file__download} ${styles.file__btn}`}

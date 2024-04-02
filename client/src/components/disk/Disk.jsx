@@ -5,6 +5,7 @@ import {getFiles, uploadFile} from "../../actions/file";
 import {FileList} from "./fileList/FileList";
 import {Popup} from "./popup/Popup";
 import {setCurrentDir, setPopupDisplay} from "../../reducers/fileReducer";
+import {Uploader} from "../upload/Uploader";
 
 export const Disk = () => {
     const dispatch = useDispatch()
@@ -60,43 +61,44 @@ export const Disk = () => {
 
     return (
         !dragEnter ?
-        <div
-            className={styles.disk}
-            onDragEnter={onDragEnterHandler}
-            onDragLeave={onDragLeaveHandler}
-            onDragOver={onDragOverHandler}
-        >
-            <div className={styles.disk__btns}>
-                {currentDir && (
-                    <button className={styles.disk__back}
-                        onClick={() => backClickHandler()}
-                    >Назад</button>
-                )}
-                <button className={styles.disk__create} onClick={() => openPopup()}>
-                    Создать папку
-                </button>
-                <div className={styles.disk__upload}>
-                    <label htmlFor='disk__upload-input' className={styles.disk__upload_label}>Загрузить файл</label>
-                    <input
-                        multiple
-                        type="file"
-                        id='disk__upload-input'
-                        className={styles.disk__upload_input}
-                        onChange={(e) => onChangeInput(e)}/>
+            <div
+                className={styles.disk}
+                onDragEnter={onDragEnterHandler}
+                onDragLeave={onDragLeaveHandler}
+                onDragOver={onDragOverHandler}
+            >
+                <div className={styles.disk__btns}>
+                    {currentDir && (
+                        <button className={styles.disk__back}
+                                onClick={() => backClickHandler()}
+                        >Назад</button>
+                    )}
+                    <button className={styles.disk__create} onClick={() => openPopup()}>
+                        Создать папку
+                    </button>
+                    <div className={styles.disk__upload}>
+                        <label htmlFor='disk__upload-input' className={styles.disk__upload_label}>Загрузить файл</label>
+                        <input
+                            multiple
+                            type="file"
+                            id='disk__upload-input'
+                            className={styles.disk__upload_input}
+                            onChange={(e) => onChangeInput(e)}/>
+                    </div>
                 </div>
+                <FileList/>
+                <Popup/>
+                <Uploader/>
             </div>
-            <FileList/>
-            <Popup/>
-        </div>
             :
-        <div
-            className={styles.drop_area}
-            onDragEnter={onDragEnterHandler}
-            onDragLeave={onDragLeaveHandler}
-            onDragOver={onDragOverHandler}
-            onDrop={onDropHandler}
-        >
-            Перетащите файлы сюда
-        </div>
+            <div
+                className={styles.drop_area}
+                onDragEnter={onDragEnterHandler}
+                onDragLeave={onDragLeaveHandler}
+                onDragOver={onDragOverHandler}
+                onDrop={onDropHandler}
+            >
+                Перетащите файлы сюда
+            </div>
     );
 };

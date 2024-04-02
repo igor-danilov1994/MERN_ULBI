@@ -1,5 +1,6 @@
 import axios from 'axios'
 import {addFile, deleteFile, setFiles} from "../reducers/fileReducer";
+import {addUploadFile, changeUploadFile, showUploader} from "../reducers/uploadReducer";
 
 const BASE_URL = `http://localhost:5001/api`
 
@@ -49,9 +50,12 @@ export const uploadFile = (file, dirId) => {
             const formData = new FormData()
             formData.append('file', file)
 
-            if (dirId){
+            if (dirId) {
                 formData.append('parent', dirId)
             }
+            const uploadFile = {name: file.name, progress: 0, id: Date.now()}
+            dispatch(showUploader())
+            dispatch(addUploadFile(uploadFile))
 
             const token = localStorage.getItem('token')
             const getFilesUrl = `${BASE_URL}/files/upload`
@@ -61,13 +65,13 @@ export const uploadFile = (file, dirId) => {
                     Authorization: `Bearer ${token}`
                 },
                 onUploadProgress: progressEvent => {
-                    const totalLength =  progressEvent.event.lengthComputable ? progressEvent.total : progressEvent.target.getResponseHeader('content-length') || progressEvent.target.getResponseHeader('x-decompressed-content-length');
+                    const totalLength = progressEvent.event.lengthComputable ? progressEvent.total : progressEvent.target.getResponseHeader('content-length') || progressEvent.target.getResponseHeader('x-decompressed-content-length');
 
                     console.log('total', totalLength)
 
-                    if (totalLength){
-                        let progress = Math.round((progressEvent.loaded * 100) / totalLength)
-                        console.log(progress, 'progress')
+                    if (totalLength) {
+                        uploadFile.progress = Math.round((progressEvent.loaded * 100) / totalLength)
+                        dispatch(changeUploadFile(uploadFile))
                     }
                 }
             })
@@ -88,7 +92,7 @@ export const downloadFile = async (file) => {
             },
         })
 
-        if (response.status === 200){
+        if (response.status === 200) {
             const blob = await response.blob()
             const downloadUrl = window.URL.createObjectURL(blob)
             const link = document.createElement('a')

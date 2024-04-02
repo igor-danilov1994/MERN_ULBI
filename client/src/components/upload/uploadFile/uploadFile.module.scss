@@ -1,0 +1,30 @@
+.upload__file {
+  background-color: var(--background-color);
+  border-radius: 8px;
+  margin: 5px 0;
+  padding: 5px 10px;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__progress__bar {
+    height: 1rem;
+    border-radius: 8px;
+    background-color: var(--font-color);
+    display: flex;
+    margin: 3px 0;
+  }
+
+  &__upload__bar {
+    background-color: green;
+    border-radius: 8px;
+  }
+
+  &__percent {
+    color: var(--background-color);
+    left: 50%;
+    position: absolute;
+  }
+}
